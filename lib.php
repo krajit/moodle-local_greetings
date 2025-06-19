@@ -14,18 +14,30 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
-/**
- * Plugin version and other meta-data are defined here.
- *
- * @package     local_greetings
- * @copyright   2022 Your name <your@email>
- * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
+function local_greetings_get_greeting($user) {
+    if ($user == null) {
+        return get_string('greetinguser', 'local_greetings');
+    }
 
-defined('MOODLE_INTERNAL') || die();
+    $country = $user->country;
 
-$plugin->component = 'local_greetings';
-$plugin->release = '0.1.0';
-$plugin->version = 2022031902;
-$plugin->requires = 2020061500;
-$plugin->maturity = MATURITY_ALPHA;
+    switch ($country) {
+        case 'AU':
+            $langstr = 'greetinguserau';
+            break;
+        case 'ES':
+            $langstr = 'greetinguseres';
+            break;
+        case 'FJ':
+            $langstr = 'greetinguserfj';
+            break;
+        case 'NZ':
+            $langstr = 'greetingusernz';
+            break;
+        default:
+            $langstr = 'greetingloggedinuser';
+            break;
+    }
+
+    return get_string($langstr, 'local_greetings', fullname($user));
+}
