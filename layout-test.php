@@ -33,6 +33,12 @@ $PAGE->set_pagelayout('standard');
 $PAGE->set_title(get_string('pluginname', 'local_greetings'));
 $PAGE->set_heading(get_string('pluginname', 'local_greetings'));
 
-echo $OUTPUT->header();
-echo '<div class="box border p-3">Here is some content but it can be anything else, too.</div>';
-echo $OUTPUT->footer();
+$output = $PAGE->get_renderer('local_greetings');
+
+echo $output->header();
+$sometext = "Here is my first text for renderable";
+$renderable = new \local_greetings\output\layout_test_page($sometext);
+
+echo $output->render_layout_newtest_page($renderable);
+
+echo $output->footer();
