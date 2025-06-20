@@ -83,7 +83,8 @@ if ($data = $messageform->get_data()) {
     }
 }
 
-echo $OUTPUT->header();
+$output = $PAGE->get_renderer('local_greetings');
+echo $output->header();
 
 if (isloggedin()) {
     echo local_greetings_get_greeting($USER);
@@ -105,50 +106,9 @@ if (has_capability('local/greetings:viewmessages', $context)) {
             ORDER BY timecreated DESC";
 
     $messages = $DB->get_records_sql($sql);
+    $renderable = new \local_greetings\output\index_page($messages);
 
-    echo $OUTPUT->box_start('card-columns');
-
-    $cardbackgroundcolor = get_config('local_greetings', 'messagecardbgcolor');
-
-    foreach ($messages as $m) {
-        echo html_writer::start_tag('div', ['class' => 'card', 'style' => "background: $cardbackgroundcolor"]);
-        echo html_writer::start_tag('div', ['class' => 'card-body']);
-        echo html_writer::tag('p', format_text($m->message, FORMAT_PLAIN), ['class' => 'card-text']);
-        echo html_writer::tag('p', get_string('postedby', 'local_greetings', $m->firstname), ['class' => 'card-text']);
-        echo html_writer::start_tag('p', ['class' => 'card-text']);
-        echo html_writer::tag('small', userdate($m->timecreated), ['class' => 'text-muted']);
-        echo html_writer::end_tag('p');
-
-        // Wrapping this within the "Delete" capability check for simplicity.
-        // You can also create another capability for "Edit messages" if you want.
-        if ($deleteanypost || ($deletepost && $m->userid == $USER->id)) {
-            echo html_writer::start_tag('p', ['class' => 'card-footer text-center']);
-
-            echo html_writer::link(
-                new moodle_url(
-                    '/local/greetings/edit.php',
-                    ['id' => $m->id]
-                ),
-                $OUTPUT->pix_icon('i/edit', get_string('edit')),
-                ['role' => 'button']
-            );
-
-            echo html_writer::link(
-                new moodle_url(
-                    '/local/greetings/index.php',
-                    ['action' => 'del', 'id' => $m->id, 'sesskey' => sesskey()]
-                ),
-                $OUTPUT->pix_icon('t/delete', get_string('delete')),
-                ['role' => 'button']
-            );
-            echo html_writer::end_tag('p');
-        }
-
-        echo html_writer::end_tag('div');
-        echo html_writer::end_tag('div');
-    }
-
-    echo $OUTPUT->box_end();
+    echo $output->render($renderable);
 }
 
-echo $OUTPUT->footer();
+echo $output->footer();
