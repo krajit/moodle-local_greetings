@@ -37,6 +37,7 @@ function local_greetings_extend_navigation_frontpage(navigation_node $frontpage)
     }
 }
 
+
 /**
  * Insert a link to index.php on the Course secondary navigation.
  *Add commentMore actions
