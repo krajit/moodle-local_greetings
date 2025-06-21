@@ -26,9 +26,14 @@ export default {
     actions: {
         showGreetingButton: '[data-action="local_greetings/helloworld-greet_button"]',
         resetButton: '[data-action="local_greetings/helloworld-reset_button"]',
+        showGreetingButtonAjit: '[data-action="local_greetings/view-testing-ajit-greet_button"]',
+        resetButtonAjit: '[data-action="local_greetings/view-testing-ajit-reset_button"]',
     },
     regions: {
         greetingBlock: '[data-region="local_greetings/helloworld-usergreeting"]',
         inputField: '[data-region="local_greetings/helloworld-input"]',
+        inputFieldAjit: '[data-region="local_greetings/view-testing-ajit-input"]',
+        greetingBlockAjit: '[data-region="local_greetings/view-testing-ajit-usergreeting"]',
+
     },
 };
