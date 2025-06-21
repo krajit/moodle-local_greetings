@@ -22,13 +22,15 @@
  */
 
 import Selectors from 'local_greetings/local/greetings/selectors';
+import * as Repository from 'local_greetings/local/greetings/repository';
+
 import * as Str from 'core/str';
 
-export const init = () => {
-    registerEventListeners();
+export const init = (userid) => {
+    registerEventListeners(userid);
 };
 
-const registerEventListeners = () => {
+const registerEventListeners = (userid) => {
     document.addEventListener('click', e => {
         if (e.target.closest(Selectors.actions.showGreetingButton)) {
             const greetingBlock = document.querySelector(Selectors.regions.greetingBlock);
@@ -46,6 +48,15 @@ const registerEventListeners = () => {
                 .catch(e);
             }
         }
+
+        // Example of an ajax call.Add commentMore actions
+        Repository.getUser(userid)
+        .then(function(response) {
+            window.console.log("Logged in user: " + response[0].firstname);
+            window.console.log("User country: " + response[0].country);
+            return;
+        })
+        .catch(e);
 
         if (e.target.closest(Selectors.actions.resetButton)) {
             const nameField = document.querySelector(Selectors.regions.inputField);

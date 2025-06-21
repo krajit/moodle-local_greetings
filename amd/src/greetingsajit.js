@@ -54,8 +54,7 @@ const registerEventListeners = () => {
 
         if (e.target.closest(Selectors.actions.resetButtonAjit)) {
             const nameField = document.querySelector(Selectors.regions.inputFieldAjit);
-                    nameField.value = '';
-        
+            nameField.value = '';
             const greetingBlock = document.querySelector(Selectors.regions.greetingBlockAjit);
             greetingBlock.innerHTML = '';
         }
